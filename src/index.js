@@ -3,24 +3,8 @@ import './style.css';
 
 let div = document.querySelector('#content');
 
-let bodyContainer = document.createElement('div');
-bodyContainer.id = "body_container";
-div.append(bodyContainer);
 
-const maintodoContainer = document.createElement("div");
-maintodoContainer.id = "maintodo_container";
-bodyContainer.append(maintodoContainer);
 
-function sidebar(scheduled, today, week, newProject) {
-    this.scheduled = scheduled;
-    this.today = today;
-    this.week = week;
-    this.newProject = newProject;
-}
-
-function userTask(task) {
-    this.task = task;
-}
 
 function header() {
     let headerContainer = document.createElement("div");
@@ -33,7 +17,33 @@ function header() {
     headerContainer.append(headerContent);
 }
 
+header();
+
+let bodyContainer = document.createElement('div');
+bodyContainer.id = "body_container";
+div.append(bodyContainer);
+
+
+
+function sidebar(scheduled, today, week, newProject) {
+    this.scheduled = scheduled;
+    this.today = today;
+    this.week = week;
+    this.newProject = newProject;
+}
+
+function userTask(task) {
+    this.task = task;
+}
+
+
+
 function pageSidebar () {
+
+    const sidebarBackground = document.createElement("div");
+    sidebarBackground.id = "sidebar_background";
+    bodyContainer.append(sidebarBackground);
+
     let sidebarContainer = document.createElement("div")
     sidebarContainer.id = "sidebar_container";
     bodyContainer.append(sidebarContainer);
@@ -105,7 +115,13 @@ function pageSidebar () {
               
         })
     })
+
+    
 }
+
+const maintodoContainer = document.createElement("div");
+maintodoContainer.id = "maintodo_container";
+bodyContainer.append(maintodoContainer);
 function mainContent(){
     const sidebarItems = document.getElementsByClassName("sidebar_item");
     var i = 0;
@@ -113,12 +129,46 @@ function mainContent(){
         sidebarItems[i].addEventListener('click', function(e){
             const currentTabHeader = document.createElement("h1");
             currentTabHeader.id = "current_tab_header";
+            currentTabHeader.className = "maintodo_item";
             currentTabHeader.innerText = this.innerText;
             maintodoContainer.append(currentTabHeader);
+
+            const currentTabTask = document.createElement("div");
+            currentTabTask.id = "user_task";
+            currentTabTask.className = "maintodo_item"
+            currentTabTask.innerText = "Add new task";
+            maintodoContainer.append(currentTabTask);
+            
+
+        currentTabTask.addEventListener('click', (function (e){
+            const modal = document.createElement("div");
+            modal.className = "task_modal";
+            modal.id = "myModel"
+            div.append(modal);
+            
+            const modalContent = document.createElement("div");
+            modalContent.className = "modal_content";
+            modal.append(modalContent);
+
+            const exitButton = document.createElement("span");
+            exitButton.className = "close";
+            modalContent.append(exitButton);
+            exitButton.innerHTML = "&times;";
+
+            const modalText = document.createElement("div")
+            modalText.innerText = "some text";
+            modalContent.append(modalText);
+
+            modal.style.display = "block"
+
+            exitButton.addEventListener('click', function(e){
+                modal.style.display = "none";cf
+            })
+
+        }))
         })
 
     }
-
 }
 
 
@@ -131,6 +181,5 @@ function todayTab() {
     bodyContainer.append(tabHeader);
 }
 
-header();
 pageSidebar();
 mainContent();
