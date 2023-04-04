@@ -7,12 +7,19 @@ let bodyContainer = document.createElement('div');
 bodyContainer.id = "body_container";
 div.append(bodyContainer);
 
+const maintodoContainer = document.createElement("div");
+maintodoContainer.id = "maintodo_container";
+bodyContainer.append(maintodoContainer);
+
 function sidebar(scheduled, today, week, newProject) {
     this.scheduled = scheduled;
     this.today = today;
     this.week = week;
     this.newProject = newProject;
+}
 
+function userTask(task) {
+    this.task = task;
 }
 
 function header() {
@@ -32,7 +39,7 @@ function pageSidebar () {
     bodyContainer.append(sidebarContainer);
 
     const scheduled = document.createElement("div");
-    scheduled.id = "scheduled";
+    scheduled.id = "sidebar_scheduled";
     scheduled.className = "sidebar_item";
     scheduled.innerText = "scheduled";
     sidebar.scheduled = scheduled.innerText;
@@ -40,7 +47,7 @@ function pageSidebar () {
     sidebarContainer.append(scheduled);
 
     const today = document.createElement("div");
-    today.id = "today";
+    today.id = "sidebar_today";
     today.className = "sidebar_item";
     today.innerText = "today";
     sidebar.today = today.innerText;
@@ -48,7 +55,7 @@ function pageSidebar () {
     sidebarContainer.append(today);
 
     const week = document.createElement("div");
-    week.id = "week";
+    week.id = "sidebar_week";
     week.className = "sidebar_item";
     week.innerText = "This week";
     sidebar.week = week.innerText;
@@ -56,7 +63,7 @@ function pageSidebar () {
     sidebarContainer.append(week);   
     
     let sidebarNewProject = document.createElement("div");
-    sidebarNewProject.id = "week";
+    sidebarNewProject.id = "sidebar_new_project";
     sidebarNewProject.className = "sidebar_item";
     sidebarNewProject.innerText = "New project";
     sidebar.sidebarNewProject = sidebarNewProject.innerText;
@@ -74,21 +81,56 @@ function pageSidebar () {
 
         projectButton.addEventListener('click', function(e){
             let customProject = document.createElement('div');
-            sidebarContainer.append(customProject);
+            customProject.className = "sidebar_item";
+            customProject.id = "custom_project";
             customProject.innerText = projectInput.value;
+            sidebarContainer.append(customProject);
             sidebar.newProject = customProject.innerText;
             console.log("new project:",sidebar.newProject);
-            console.log("hey");
+
+            customProject.addEventListener('click', function(e){
+                const currentTabHeader = document.createElement("h1");
+                currentTabHeader.id = "current_tab_header";
+                currentTabHeader.innerText = this.innerText;
+                maintodoContainer.append(currentTabHeader);
+            })
+
 
             if (projectButton.parentNode)
             projectButton.parentNode.removeChild(projectButton);
 
             if (projectInput.parentNode)
-            projectInput.parentNode.removeChild(projectInput);                
+            projectInput.parentNode.removeChild(projectInput);
+            
+              
         })
     })
 }
+function mainContent(){
+    const sidebarItems = document.getElementsByClassName("sidebar_item");
+    var i = 0;
+    for(i = 0; i < sidebarItems.length; i++) {
+        sidebarItems[i].addEventListener('click', function(e){
+            const currentTabHeader = document.createElement("h1");
+            currentTabHeader.id = "current_tab_header";
+            currentTabHeader.innerText = this.innerText;
+            maintodoContainer.append(currentTabHeader);
+        })
 
+    }
+
+}
+
+
+
+
+function todayTab() {
+    const tabHeader = document.createElement("h1");
+    tabHeader.id = "tab_header"
+    console.log(document.getElementById("sidebar_item"))
+    bodyContainer.append(tabHeader);
+}
 
 header();
 pageSidebar();
+mainContent();
